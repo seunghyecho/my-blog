@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import styled from 'styled-components';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { MdAdd } from 'react-icons/md';
+import { FaUserPlus, FaSearch, FaUser } from 'react-icons/fa';
+import Link from 'next/link';
+import styled from 'styled-components';
 import Modal from 'components/common/Modal';
 import palette from 'lib/styles/palette';
 
@@ -42,19 +42,19 @@ function HeaderUtils({ user }) {
         {user && (
           <li>
             <button onClick={onCreate}>
-              <MdAdd size={24} color={palette.cyan[5]} />
+              <FaUser size={20} color={palette.cyan[5]} />
             </button>
           </li>
         )}
 
         <li>
           <Link href="/search">
-            <MdAdd size={24} />
+            <FaSearch size={20} />
           </Link>
         </li>
         <li>
           <Link href={user ? '/accounts' : '/login'}>
-            <MdAdd size={24} />
+            <FaUserPlus size={20} />
           </Link>
         </li>
       </Utils>

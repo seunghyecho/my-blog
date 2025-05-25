@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MdAdd } from 'react-icons/md';
+import { FaMoon, FaSun } from 'react-icons/fa';
 import palette from 'lib/styles/palette';
 
 const ToggleWrapper = styled.button<{ mode?: boolean }>`
@@ -23,7 +23,7 @@ const ToggleWrapper = styled.button<{ mode?: boolean }>`
 function ThemeToggle({ toggle, mode }) {
   return (
     <ToggleWrapper onClick={toggle}>
-      {mode ? <MdAdd color={`${palette.cyan[5]}`} /> : <MdAdd />}
+      {mode ? <FaMoon color={`${palette.cyan[5]}`} /> : <FaSun />}
     </ToggleWrapper>
   );
 }
