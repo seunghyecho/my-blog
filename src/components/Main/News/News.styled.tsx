@@ -1,5 +1,5 @@
-import palette from 'lib/styles/palette';
-import styled from 'styled-components';
+import palette from "lib/styles/palette";
+import styled from "styled-components";
 
 const NewsListBlock = styled.ul`
   display: flex;
@@ -62,7 +62,7 @@ const NewsItemBlock = styled.li`
         font-size: 11px;
 
           & + b:before {
-            content: '\\B7';
+            content: '';
             padding: 0 0.25rem;
             color: ${palette.gray[6]};
         }
@@ -70,6 +70,5 @@ const NewsItemBlock = styled.li`
     }
   }
 `;
-
 
 export { NewsListBlock, NewsItemBlock };
