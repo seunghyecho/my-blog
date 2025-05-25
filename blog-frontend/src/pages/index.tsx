@@ -20,20 +20,20 @@ const TabContainer = styled.div`
 `;
 function Main() {
   const [page] = useState<number>(1);
-  const [tab, setTab] = useState('about');
+  const [tab, setTab] = useState('posts');
   const [category, setCategory] = useState<string>('all');
 
   const news = useQuery(['news', { page, category }], () =>
     fetchNews({
       params: { page: Number(page) },
       category: category === 'all' ? '' : category
-    }))
-  ;
+    })
+  );
   const handleSelect = useCallback(
-    (category:string) =>
-      setCategory(category)
-    , []);
-  
+    (category: string) => setCategory(category),
+    []
+  );
+
   const newsList = news.data?.data.articles || [];
 
   return (
@@ -41,15 +41,33 @@ function Main() {
       <FlexLayout>
         <WrapperStyled>
           <TabContainer>
-            <TabButton isActive={tab === 'about'} onClick={()=> setTab('about')}>ABOUT</TabButton>
-            <TabButton isActive={tab === 'posts'} onClick={()=> setTab('posts')}>POSTS</TabButton>
-            <TabButton isActive={tab === 'news'} onClick={()=> setTab('news')}>NEWS</TabButton>
-         </TabContainer>
+            <TabButton
+              isActive={tab === 'about'}
+              onClick={() => setTab('about')}
+            >
+              ABOUT
+            </TabButton>
+            <TabButton
+              isActive={tab === 'posts'}
+              onClick={() => setTab('posts')}
+            >
+              POSTS
+            </TabButton>
+            <TabButton isActive={tab === 'news'} onClick={() => setTab('news')}>
+              NEWS
+            </TabButton>
+          </TabContainer>
 
           <ContentStyled>
-          {tab === 'about' && <About />}
-          {tab === 'posts' && <Post />}
-          {tab === 'news' && <News data={newsList} category={category} handleSelect={handleSelect} />}
+            {tab === 'about' && <About />}
+            {tab === 'posts' && <Post />}
+            {tab === 'news' && (
+              <News
+                data={newsList}
+                category={category}
+                handleSelect={handleSelect}
+              />
+            )}
           </ContentStyled>
         </WrapperStyled>
 
@@ -59,7 +77,4 @@ function Main() {
   );
 }
 
-
 export default Main;
-
-

@@ -2,21 +2,25 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Tags from 'components/common/Tags';
 import SubInfo from 'components/common/SubInfo';
-import { PostListBlock, PostItemBlock, PostItemContent } from 'components/posts/PostList.styled';
+import {
+  PostListBlock,
+  PostItemBlock,
+  PostItemContent
+} from 'components/posts/PostList.styled';
 import { postT } from 'types/post';
 
 function ListItem({ post }) {
   const router = useRouter();
   const { title, body, user, publishedDate, tags, _id }: postT = post;
 
-  const handleMoveDetailPage = ()=>{
+  const handleMoveDetailPage = () => {
     if (!router.isReady) return;
     if (_id) {
       router.replace(`/posts`);
       window.localStorage.setItem('_id', _id);
     }
-  }
-  
+  };
+
   return (
     <PostItemBlock>
       <h1>
@@ -41,17 +45,17 @@ function PostList({ posts, loading, error }) {
   if (error) {
     return <PostItemBlock>오류 발생!</PostItemBlock>;
   }
-  
+
   return (
-      <>
-        {!loading && posts && (
-          <PostListBlock>
-            {posts.map(post => (
-              <ListItem post={post} key={post._id} />
-            ))}
-          </PostListBlock>
-        )}
-      </>
+    <>
+      {!loading && posts && (
+        <PostListBlock>
+          {posts.map(post => (
+            <ListItem post={post} key={post._id} />
+          ))}
+        </PostListBlock>
+      )}
+    </>
   );
 }
 

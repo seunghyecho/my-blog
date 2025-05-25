@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { FaUserPlus, FaSearch, FaUser } from 'react-icons/fa';
+import { FaUser, FaSearch, FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Modal from 'components/common/Modal';
@@ -42,7 +42,7 @@ function HeaderUtils({ user }) {
         {user && (
           <li>
             <button onClick={onCreate}>
-              <FaUser size={20} color={palette.cyan[5]} />
+              <FaPlus size={20} color={palette.cyan[5]} />
             </button>
           </li>
         )}
@@ -54,7 +54,7 @@ function HeaderUtils({ user }) {
         </li>
         <li>
           <Link href={user ? '/accounts' : '/login'}>
-            <FaUserPlus size={20} />
+            <FaUser size={20} />
           </Link>
         </li>
       </Utils>
