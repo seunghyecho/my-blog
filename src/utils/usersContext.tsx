@@ -65,5 +65,5 @@ export function useUsersDispatch() {
   return dispatch;
 }
 
-export const getUsers = createAsyncDispatcher("GET_USERS", api.getUsers);
-export const getUser = createAsyncDispatcher("GET_USER", api.getUser);
+export const getUsers = createAsyncDispatcher("GET_USERS", api.me);
+export const getUser = createAsyncDispatcher("GET_USER", api.me);
