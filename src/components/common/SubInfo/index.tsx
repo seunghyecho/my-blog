@@ -5,12 +5,11 @@ import palette from "lib/styles/palette";
 const SubInfoBlock = styled.div<{ isMarginTop: boolean }>`
   padding: 1rem 0;
   color: ${palette.gray[6]};
-  border-top: 1px solid ${palette.gray[2]};
-
+  border-bottom: 1px solid ${palette.gray[2]};
   ${(props) =>
     props.isMarginTop &&
     css`
-      margin-top: 1rem;
+      margin-top: 0.5rem;
     `}
 
   span + span:before {

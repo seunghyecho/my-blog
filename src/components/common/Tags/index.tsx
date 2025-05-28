@@ -1,23 +1,43 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import { Tag } from 'components/write/TagBox.styled';
 
 const Wrapper = styled.div`
-  height: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
 `;
 
-const TagsBlock = styled(Tag)`
-  margin-top: 0.5rem;
-  display: inline-block;
+const TagItem = styled.div`
+  background-color: #f0f0f0;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-1px);
+  }
+
+  a {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    
+    &:hover {
+      color: #333;
+    }
+  }
 `;
 
 function Tags({ tags }) {
   return (
     <Wrapper>
       {tags.map(t => (
-        <TagsBlock key={t}>
-          <Link href={`/?tag=${t}`} >#{t}</Link>
-        </TagsBlock>
+        <TagItem key={t}>
+          <Link href={`/?tag=${t}`}>#{t}</Link>
+        </TagItem>
       ))}
     </Wrapper>
   );

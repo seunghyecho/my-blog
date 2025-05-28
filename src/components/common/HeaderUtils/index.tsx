@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { FaUser, FaSearch, FaPlus } from 'react-icons/fa';
+import { FaUser, FaSearch, FaPen } from 'react-icons/fa';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Modal from 'components/common/Modal';
@@ -42,7 +42,7 @@ function HeaderUtils({ user }) {
         {user && (
           <li>
             <button onClick={onCreate}>
-              <FaPlus size={20} color={palette.cyan[5]} />
+              <FaPen size={20} color={palette.cyan[5]} />
             </button>
           </li>
         )}

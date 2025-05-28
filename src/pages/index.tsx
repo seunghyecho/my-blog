@@ -61,13 +61,6 @@ function Main() {
           <ContentStyled>
             {tab === 'about' && <About />}
             {tab === 'posts' && <Post />}
-            {tab === 'news' && (
-              <News
-                data={newsList}
-                category={category}
-                handleSelect={handleSelect}
-              />
-            )}
           </ContentStyled>
         </WrapperStyled>
 

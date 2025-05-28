@@ -13,11 +13,14 @@ function PostViewerContainer({ postId }){
   const router = useRouter();
   const {data, isLoading, isError}= useQuery(['detail'], ()=>fetchReadPost(postId))
 
-  const { user } = useSelector(
-    ({ user }) => ({
-      user: user.user,
-    }),
-  );
+  // const { user } = useSelector(
+  //   ({ user }) => ({
+  //     user: user.user,
+  //   }),
+  // );
+
+  // TODO 사용자 정보 체크
+  const userId = sessionStorage.getItem('userId');
 
   const post = data?.data;
 
@@ -51,7 +54,8 @@ function PostViewerContainer({ postId }){
     deleteMutate.mutate();
   }
   
-  const ownPost = (user && user?._id) == (post && post?.user?._id);
+  // TODO
+  const ownPost = (userId && userId) == (post && post?.user?._id);
 
   return (
     <PostViewer 

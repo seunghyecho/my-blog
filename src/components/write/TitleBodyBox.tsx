@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import palette from 'lib/styles/palette';
-import 'react-quill/dist/quill.bubble.css';
+// import 'react-quill/dist/quill.bubble.css';
+import 'react-quill/dist/quill.snow.css';
 
 const QuillNoSSRWrapper = dynamic(() => import('react-quill'), {
   ssr: false,
-  loading: () => <p>Loading ...</p>
+  loading: () => <p>Editor Loading ...</p>
 });
 
 const Wrapper = styled.div`
@@ -36,6 +37,7 @@ interface Props{
   body:any; 
   setBody:any;
 }
+
 function TitleBodyBox({ title, setTitle, body, setBody }:Props) {
   const modules = {
     toolbar: [
@@ -76,24 +78,23 @@ function TitleBodyBox({ title, setTitle, body, setBody }:Props) {
 
 
   return (
-    <>
-      <Wrapper>
-        <input
-          type='text'
-          placeholder='제목을 입력하세요.'
-          defaultValue={title}
-          onChange={(e)=> setTitle(e.currentTarget.value)}
-        />
-        <QuillNoSSRWrapper
-          theme='bubble'
-          placeholder='내용을 입력하세요.'
-          defaultValue={body}
-          onChange={(e)=>setBody(e)}
-          modules={modules}
-          formats={formats}
-        />
-      </Wrapper>
-    </>
+    <Wrapper>
+      <input
+        type='text'
+        placeholder='제목을 입력하세요.'
+        defaultValue={title}
+        onChange={(e)=> setTitle(e.currentTarget.value)}
+      />
+      <QuillNoSSRWrapper
+        theme='snow'
+        // theme='bubble'
+        placeholder='내용을 입력하세요.'
+        defaultValue={body}
+        onChange={(e)=>setBody(e)}
+        modules={modules}
+        formats={formats}
+      />
+    </Wrapper>
   );
 }
 

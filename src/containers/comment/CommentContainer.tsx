@@ -8,6 +8,11 @@ import { fetchCreateComment, fetchReadComment } from "lib/api/comments";
 
 const Wrapper = styled.div`
     width: 100%;
+    margin-top: 4rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
 
     h1{
         font-size: 1.125rem;
@@ -61,6 +66,7 @@ const CommentBlock = styled.li`
         overflow-wrap: break-word;
     }
 `;
+
 function CommentContainer({ postId }: { postId: string }) {
   const [value, setValue] = useState("");
 
