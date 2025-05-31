@@ -1,4 +1,4 @@
-import client from 'lib/api/client';
+import client from "lib/api/client";
 
 /**
  * 게시글 조회 api
