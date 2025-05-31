@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -9,7 +10,6 @@ const Wrapper = styled.div`
 `;
 
 const TagItem = styled.div`
-  background-color: #f0f0f0;
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
   transition: all 0.2s ease-in-out;
@@ -20,7 +20,6 @@ const TagItem = styled.div`
   }
 
   a {
-    color: #666;
     text-decoration: none;
     font-size: 0.9rem;
     font-weight: 500;

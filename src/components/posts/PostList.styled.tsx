@@ -13,7 +13,6 @@ const PostItemBlock = styled.li`
   margin-bottom: 2rem;
   width: calc(100%/2 - 5px);
   border-radius: 12px;
-  background: #ffffff;
   border: 1px solid #eaeaea;
   transition: all 0.2s ease-in-out;
 
@@ -35,7 +34,6 @@ const PostItemBlock = styled.li`
     font-weight: 600;
     margin-bottom: 0.75rem;
     line-height: 1.4;
-    color: #333;
   }
 
   a {
