@@ -5,6 +5,7 @@ import SubInfo from 'components/common/SubInfo';
 import {
   PostListBlock,
   PostItemBlock,
+  PostNullItemBlock,
   PostItemContent
 } from 'components/posts/PostList.styled';
 import { postT } from 'types/post';
@@ -43,7 +44,11 @@ function PostList({ posts, loading, error }) {
    */
 
   if (error) {
-    return <PostItemBlock>오류 발생!</PostItemBlock>;
+    return <PostNullItemBlock>오류 발생!</PostNullItemBlock>;
+  }
+
+  if(posts.length === 0 ){
+    return  <PostNullItemBlock>등록된 글이 없습니다.</PostNullItemBlock>
   }
 
   return (

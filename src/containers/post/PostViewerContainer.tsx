@@ -54,7 +54,7 @@ function PostViewerContainer({ postId }){
     deleteMutate.mutate();
   }
   
-  // TODO
+  // TODO 사용자 정보 체크
   const ownPost = (userId && userId) == (post && post?.user?._id);
 
   return (

@@ -62,7 +62,7 @@ function LoginForm() {
       console.log('로그인 성공!');
 
       if (res.data.username) {
-        // TODO
+        // TODO 사용자 정보 체크
         sessionStorage.setItem('username', res.data.username);
         sessionStorage.setItem('userId', res.data._id);
         // 토큰 저장

@@ -14,6 +14,13 @@ const fetchPosts = ({ page, username, tag }) => {
 };
 
 /**
+ * 내가 쓴 게시글만 조회 api
+ */
+const fetchMyPosts = ({ page, tag, username }) => {
+  return client.get(`/api/posts/my?page=${page}${tag ? `&tag=${tag}` : ''}${username ? `&username=${username}` : ''}`);
+};
+
+/**
  * 게시글 상세 api
  */
 const fetchReadPost = (id: number | string) => client.get(`/api/posts/${id}`);
@@ -45,6 +52,7 @@ const fetchDeletePost = (id: number | string) => {
 
 export {
   fetchPosts,
+  fetchMyPosts,
   fetchReadPost,
   fetchCreatePost,
   fetchUpdatePost,

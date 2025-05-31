@@ -38,6 +38,30 @@ const PostItemBlock = styled.li`
   }
 `;
 
+const PostNullItemBlock = styled.li`
+  padding: 1rem;
+  margin-bottom: 3rem;
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 4px 16px 0px;
+  transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
+  text-align:center;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 12px 20px 0px;
+  }
+
+  h1{
+    font-size: 1.75rem;
+    font-weight: bold;;
+  }
+
+  a:hover {
+    color: ${palette.gray[6]};
+  }
+`;
+
 const PostItemContent = styled.div`
   margin: 2rem 0 0;
   max-height: 40px;
@@ -52,5 +76,6 @@ const PostItemContent = styled.div`
 export {
   PostListBlock,
   PostItemBlock,
+  PostNullItemBlock,
   PostItemContent
 };
