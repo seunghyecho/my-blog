@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const WrapperStyled = styled.div`
-  width: 70%;
 
   @media (max-width: 1024px) {
     padding-right: 0;

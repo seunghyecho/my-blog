@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
 import Post from 'components/Main/Post';
 import About from 'components/Main/About';
-import Side from 'components/common/Side';
+import MyPost from 'components/Main/MyPost';
 import TabButton from 'components/common/TabButton';
 import Responsive from 'components/common/Responsive';
 import { WrapperStyled, ContentStyled } from 'lib/styles/main.styled';
 import { FlexLayout } from 'lib/styles/common.styled';
-import MyPost from 'components/Main/MyPost';
 
 const MainBlock = styled(Responsive)`
   padding-bottom: 10rem;
@@ -28,12 +26,6 @@ function Main() {
         <WrapperStyled>
           <TabContainer>
             <TabButton
-              isActive={tab === 'about'}
-              onClick={() => setTab('about')}
-            >
-              ABOUT
-            </TabButton>
-            <TabButton
               isActive={tab === 'allPosts'}
               onClick={() => setTab('allPosts')}
             >
@@ -51,7 +43,6 @@ function Main() {
           </ContentStyled>
         </WrapperStyled>
 
-        <Side />
       </FlexLayout>
     </MainBlock>
   );

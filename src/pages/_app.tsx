@@ -13,6 +13,7 @@ import { GlobalStyle } from 'lib/styles/globals';
 import { darkTheme, lightTheme } from 'lib/styles/theme';
 
 import Header from 'components/common/Header';
+import Footer from 'components/common/Footer';
 
 function MyApp({ Component, pageProps }) {
   /**
@@ -68,6 +69,7 @@ function MyApp({ Component, pageProps }) {
             <GlobalStyle />
             <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
             <Component {...pageProps} />
+            <Footer />
           </ThemeProvider>
         </QueryClientProvider>
       </Provider>

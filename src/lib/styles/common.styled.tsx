@@ -12,7 +12,6 @@ const Layout = styled.div`
 
 const FlexLayout = styled.div`
   margin: 20px auto;
-  display: flex;
   position: relative;
 `;
 
