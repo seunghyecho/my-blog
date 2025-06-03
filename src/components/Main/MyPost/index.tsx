@@ -7,6 +7,7 @@ import { fetchMyPosts } from 'lib/api/posts';
 
 function MyPost() {
   const router = useRouter();
+
   const [page, setPage]= useState(
     router.query.page ? Number(router.query.page) : 1
   );
@@ -16,12 +17,12 @@ function MyPost() {
 
   const { data, isLoading, isError }= useQuery(['myPosts',page],() => fetchMyPosts({
       page,
-      username:username||'',
+      username:username || '',
       tag:''
   }));
 
   const posts = data?.data || '';
-  const lastPage = data?.headers['last-page'];
+  const lastPage = Number(data?.headers['last-page']);
 
   useEffect(()=>{
     router.replace({
@@ -42,7 +43,7 @@ function MyPost() {
       <Pagination
         page={page}
         setPage={setPage}
-        lastPage={Number(lastPage)}
+        lastPage={lastPage}
       />
     </>
   );

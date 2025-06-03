@@ -5,9 +5,9 @@ import Pagination from 'components/posts/Pagination';
 import PostListContainer from 'containers/posts/PostListContainer';
 import { fetchPosts } from 'lib/api/posts';
 
-
 function Post() {
   const router = useRouter();
+  
   const [page, setPage]= useState(
     router.query.page ? Number(router.query.page) : 1
   );
@@ -19,7 +19,7 @@ function Post() {
   }));
 
   const posts = data?.data || '';
-  const lastPage = data?.headers['last-page'];
+  const lastPage = Number(data?.headers['last-page']);
 
   useEffect(()=>{
     router.replace({
@@ -40,7 +40,7 @@ function Post() {
       <Pagination
         page={page}
         setPage={setPage}
-        lastPage={Number(lastPage)}
+        lastPage={lastPage}
       />
     </>
   );

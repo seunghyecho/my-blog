@@ -3,10 +3,12 @@ import Link from 'next/link';
 import palette from 'lib/styles/palette';
 
 const AuthTemplateBlock = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+ position: relative;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ height: 100vh;
 `;
 
 const WhiteBox = styled.div`
