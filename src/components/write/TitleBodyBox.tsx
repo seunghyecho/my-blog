@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import palette from 'lib/styles/palette';
-// import 'react-quill/dist/quill.bubble.css';
+
+import ReactQuill, { ReactQuillProps } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const QuillNoSSRWrapper = dynamic(() => import('react-quill'), {
-  ssr: false,
-  loading: () => <p>Editor Loading ...</p>
-});
+interface ForwardedQuillComponent extends ReactQuillProps {
+  forwardedRef: React.Ref<ReactQuill>;
+}
+
+const QuillNoSSRWrapper = dynamic(
+  async () => {
+    const { default: QuillComponent } = await import('react-quill');
+    const Quill = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
+      <QuillComponent ref={forwardedRef} {...props} />
+    );
+    return Quill;
+  },
+  { loading: () => <div>...loading</div>, ssr: false },
+);
 
 const Wrapper = styled.div`
   padding: 2rem 0;
@@ -39,6 +50,7 @@ interface Props{
 }
 
 function TitleBodyBox({ title, setTitle, body, setBody }:Props) {
+  const quillInstance = useRef<ReactQuill>(null);
   const modules = {
     toolbar: [
       [{ header: '1' }, { header: '2' }, { font: [] }],
@@ -87,13 +99,13 @@ function TitleBodyBox({ title, setTitle, body, setBody }:Props) {
       />
       <QuillNoSSRWrapper
         theme='snow'
-        // theme='bubble'
         placeholder='내용을 입력하세요.'
         defaultValue={body}
-        onChange={(e)=>setBody(e)}
+        onChange={(e) => setBody(e)}
         modules={modules}
-        formats={formats}
-      />
+        formats={formats} 
+        forwardedRef={quillInstance}      />
+    
     </Wrapper>
   );
 }
