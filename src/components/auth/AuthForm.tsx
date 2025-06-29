@@ -10,10 +10,15 @@ import {
 
 interface Props {
   type: string;
-  form: any;
+  form: {
+     username: string,
+    password: string,
+    passwordConfirm?:string
+  };
   onChange: React.ChangeEventHandler;
   onSubmit: React.EventHandler<any>;
   error: string;
+  loading?: boolean;
 }
 
 const textMap = {
@@ -22,7 +27,7 @@ const textMap = {
   accounts: '회원정보'
 };
 
-function AuthForm({ type, form, onChange, onSubmit, error }: Props) {
+function AuthForm({ type, form, onChange, onSubmit, error, loading = false }: Props) {
   const text = textMap[type];
 
   return (
@@ -34,6 +39,7 @@ function AuthForm({ type, form, onChange, onSubmit, error }: Props) {
           placeholder="아이디"
           onChange={onChange}
           value={form.username}
+          disabled={loading}
         />
         <StyledInput
           type="password"
@@ -41,6 +47,7 @@ function AuthForm({ type, form, onChange, onSubmit, error }: Props) {
           placeholder="비밀번호"
           onChange={onChange}
           value={form.password}
+          disabled={loading}
         />
 
         {type === 'register' && (
@@ -50,10 +57,17 @@ function AuthForm({ type, form, onChange, onSubmit, error }: Props) {
             placeholder="비밀번호 확인"
             onChange={onChange}
             value={form.passwordConfirm}
+            disabled={loading}
           />
         )}
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <Button fullWidth cyan type="submit" label={text} />
+        <Button 
+          fullWidth 
+          cyan 
+          type="submit" 
+          label={loading ? '처리중...' : text}
+          loading={loading}
+        />
       </form>
 
       <Footer>

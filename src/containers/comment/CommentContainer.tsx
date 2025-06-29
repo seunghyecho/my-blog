@@ -6,6 +6,8 @@ import Button from "components/common/Button";
 import palette from "lib/styles/palette";
 import { fetchCreateComment, fetchDeleteComment, fetchReadComment, fetchUpdateComment } from "lib/api/comments";
 
+import { getUserInfo } from 'utils/auth';
+
 const Wrapper = styled.div`
     width: 100%;
     margin-top: 4rem;
@@ -94,8 +96,7 @@ function ActionButtons({ handleDelete, handleUpdate }: {
 }
 
 function CommentContainer({ postId }: { postId: string }) {
-  // TODO 사용자 정보 체크
-  const userId = sessionStorage.getItem('userId');
+  const user = getUserInfo();
 
   const [value, setValue] = useState("");
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
@@ -168,7 +169,7 @@ function CommentContainer({ postId }: { postId: string }) {
       </form>
       <ul>
         {comments?.map((c: any) => {
-          const isOwnComment = userId === c.user._id;
+          const isOwnComment = user.id === c.user._id;
           const isEditing = editingCommentId === c._id;
           
           return (

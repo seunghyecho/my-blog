@@ -20,7 +20,6 @@ class MyDocument extends Document {
             type="text/css"
             href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css"
           />
-          <title>블로그 | 생-성</title>
         </Head>
         <body>
           <Main />

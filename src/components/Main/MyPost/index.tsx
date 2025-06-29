@@ -5,6 +5,8 @@ import Pagination from 'components/posts/Pagination';
 import PostListContainer from 'containers/posts/PostListContainer';
 import { fetchMyPosts } from 'lib/api/posts';
 
+import { getUserInfo } from 'utils/auth';
+
 function MyPost() {
   const router = useRouter();
 
@@ -12,12 +14,12 @@ function MyPost() {
     router.query.page ? Number(router.query.page) : 1
   );
 
-  // TODO 사용자 정보 체크
-  const username = sessionStorage.getItem('username');
+ 
+  const user = getUserInfo();
 
   const { data, isLoading, isError }= useQuery(['myPosts',page],() => fetchMyPosts({
       page,
-      username:username || '',
+      username: user?.username || '',
       tag:''
   }));
 

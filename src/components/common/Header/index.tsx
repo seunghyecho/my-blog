@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import ThemeToggle from 'components/common/ThemeToggle';
 import HeaderUtils from 'components/common/HeaderUtils';
 import Responsive from 'components/common/Responsive';
+import { getUserInfo } from 'utils/auth';
 
 const HeaderBlock = styled.header`
   height: 6rem;
@@ -28,10 +28,7 @@ const Spacer = styled.div`
 `;
 
 function Header({ isDarkMode, toggleDarkMode }) {
-  // const { user } = useSelector(({ user }) => ({ user: user.user }));
-  // const { username } = user || '';
-
-  const username = sessionStorage.getItem('username');
+  const user = getUserInfo();
 
   return (
     <HeaderBlock>
@@ -39,9 +36,9 @@ function Header({ isDarkMode, toggleDarkMode }) {
         <ThemeToggle toggle={toggleDarkMode} mode={isDarkMode} />
 
         <Link href="/" className="title">
-          {username ? `@${username}` : '@'} Blog
+          {user?.username ? `@${user?.username}` : '@'} Blog
         </Link>
-        <HeaderUtils user={username} />
+        <HeaderUtils user={user?.username} />
       </Wrapper>
       <Spacer />
     </HeaderBlock>

@@ -8,19 +8,14 @@ import { setOriginalPost } from 'modules/write';
 import { fetchDeletePost, fetchReadPost } from 'lib/api/posts';
 import { readPost, unloadPost } from 'modules/post';
 
+import { getUserInfo } from 'utils/auth';
+
 function PostViewerContainer({ postId }){
   const dispatch = useDispatch();
   const router = useRouter();
   const {data, isLoading, isError}= useQuery(['detail'], ()=>fetchReadPost(postId))
 
-  // const { user } = useSelector(
-  //   ({ user }) => ({
-  //     user: user.user,
-  //   }),
-  // );
-
-  // TODO 사용자 정보 체크
-  const userId = sessionStorage.getItem('userId');
+  const user = getUserInfo();
 
   const post = data?.data;
 
@@ -54,8 +49,7 @@ function PostViewerContainer({ postId }){
     deleteMutate.mutate();
   }
   
-  // TODO 사용자 정보 체크
-  const ownPost = (userId && userId) == (post && post?.user?._id);
+  const ownPost = user?.id == (post && post?.user?._id);
 
   return (
     <PostViewer 

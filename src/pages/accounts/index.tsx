@@ -5,6 +5,7 @@ import * as authAPI from 'lib/api/auth';
 
 import Button from 'components/common/Button';
 import AuthTemplate from 'components/auth/AuthTemplate';
+import { getUserInfo } from 'utils/auth';
 
 const HeadStyled = styled.h1`
   margin: 1rem 0;
@@ -27,7 +28,9 @@ const HeadStyled = styled.h1`
 
 function Accounts() {
   const router = useRouter();
-  const username = sessionStorage.getItem('username');
+
+  const user = getUserInfo();
+
   const onLogout = () => {
     const check = window.confirm('로그아웃 하시겠습니까?');
     if (check) {
@@ -42,7 +45,7 @@ function Accounts() {
 
   return (
     <AuthTemplate>
-      <HeadStyled>{username} 님</HeadStyled>
+      <HeadStyled>{user?.username} 님</HeadStyled>
       <Button label="로그아웃" onClick={onLogout} fullWidth />
     </AuthTemplate>
   );

@@ -3,6 +3,8 @@ import Link from "next/link";
 import styled, { css } from "styled-components";
 import palette from "lib/styles/palette";
 
+import { getUserInfo } from 'utils/auth';
+
 const SubInfoBlock = styled.div<{ isMarginTop: boolean }>`
   padding: 1rem 0;
   border-top: 1px solid ${palette.gray[2]};
@@ -37,7 +39,7 @@ const SubInfoBlock = styled.div<{ isMarginTop: boolean }>`
 `;
 
 function SubInfo({ username, publishedDate, isMarginTop }) {
-  const storedUsername = sessionStorage.getItem('username');
+  const user = getUserInfo();
   return (
     <SubInfoBlock isMarginTop={isMarginTop}>
       <span>
@@ -46,7 +48,7 @@ function SubInfo({ username, publishedDate, isMarginTop }) {
           <Link href={`/${username || ""}`}>{username || ""}</Link>
         </b>
       </span>
-      {storedUsername === username && <b className="account">Me 🙋🏻‍♀️</b> }
+      {user?.username === username && <b className="account">Me 🙋🏻‍♀️</b> }
       <span>{new Date(publishedDate).toLocaleDateString()}</span>
     </SubInfoBlock>
   );

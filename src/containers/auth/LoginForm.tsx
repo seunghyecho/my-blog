@@ -1,48 +1,74 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { changeField, initializeForm, login } from 'modules/auth';
+// import { changeField, initializeForm } from 'modules/auth';
 import * as authAPI from 'lib/api/auth';
 import AuthForm from 'components/auth/AuthForm';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { me } from 'lib/api/users';
+import { setAuthToken, setUserInfo } from 'utils/auth';
 
 function LoginForm() {
   const router = useRouter();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const [auth, setAuth] = useState(null);
   const [error, setError] = useState(null);
 
-  // 사용자 정보 조회 쿼리
-  const { data: userData, refetch: refetchUser } = useQuery(
-    ['user'],
-    () => me(),
-    {
-      enabled: false, // 초기에는 비활성화
-      retry: false,
-      onSuccess: (data) => {
-        console.log('사용자 정보 조회 성공:', data);
-        // 사용자 정보를 Redux store에 저장
-        // dispatch(login(data));
-      },
-      onError: (error) => {
-        console.error('사용자 정보 조회 실패:', error);
-        setError('사용자 정보 조회에 실패했습니다.');
-      }
-    }
-  );
+  // 로그인 폼 상태를 React Query로 관리
+  const [loginForm, setLoginForm] = useState({
+    username: '',
+    password: ''
+  });
 
+  // 로그인 뮤테이션
+  const loginMutation = useMutation({
+    mutationFn: authAPI.login,
+    onSuccess: (res) => {
+      console.log('로그인 성공!', res.data);
+      
+      // 토큰 저장 (새로운 유틸리티 함수 사용)
+      setAuthToken(res.data.token, 3600); // 1시간 만료
+      
+      // 사용자 정보 저장
+      setUserInfo({
+        id: res.data._id,
+        username: res.data.username
+      });
+      
+      // React Query 캐시에 사용자 정보 저장
+      queryClient.setQueryData(['user'], res.data);
+      
+      // 로그인 성공 후 메인 페이지로 이동
+      router.push('/');
+    },
+    onError: (err) => {
+      console.error('로그인 에러:', err);
+      setError('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
+    }
+  });
+
+  // Redux 상태 관리 코드 주석처리
+  /*
   const { form, authError, user } = useSelector(({ auth, user }) => ({
     form: auth.login,
     auth: auth.auth,
     authError: auth.authError,
     user: user.user
   }));
-
-  const onChange = e => {
+  */
+  
+  const onChange = (e) => {
     const { value, name } = e.target;
+
+    // React Query로 폼 상태 관리
+    setLoginForm((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+
+    // Redux 액션 주석처리
+    /*
     dispatch(
       changeField({
         form: 'login',
@@ -50,57 +76,46 @@ function LoginForm() {
         value
       })
     );
+    */
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const { username, password } = form;
+    const { username, password } = loginForm;
 
-    try {
-      // 로그인 API 호출
-      const res = await authAPI.login({ username, password });
-      console.log('로그인 성공!');
-
-      if (res.data.username) {
-        // TODO 사용자 정보 체크
-        sessionStorage.setItem('username', res.data.username);
-        sessionStorage.setItem('userId', res.data._id);
-        // 토큰 저장
-        sessionStorage.setItem('token', res.data.token);
-        setAuth(true);
-      }
-    } catch (err) {
-      setError('로그인 실패!');
-      console.error('로그인 에러:', err);
+    // 폼 유효성 검사
+    if (!username || !password) {
+      setError('아이디와 비밀번호를 모두 입력해주세요.');
+      return;
     }
+
+    // 로그인 뮤테이션 실행
+    loginMutation.mutate({ username, password });
   };
 
+  // 컴포넌트 마운트 시 폼 초기화 (Redux 대신 React Query로)
   useEffect(() => {
-    if (auth) {
-      console.log('로그인 성공! 사용자 정보 조회 시작');
-      // 로그인 성공 후 사용자 정보 조회
-      refetchUser();
-    }
-  }, [auth, refetchUser]);
+    setLoginForm({
+      username: '',
+      password: ''
+    });
+    setError(null);
+    
+    // Redux 폼 초기화 주석처리
+    // dispatch(initializeForm('login'));
+  }, []);
 
-  // 사용자 정보 조회 성공 시 메인 페이지로 이동
-  useEffect(() => {
-    if (userData) {
-      console.log('사용자 정보 조회 완료, 메인 페이지로 이동');
-      authAPI.check().then(res => {
-        console.log('인증 성공 로그:', res)
-        router.push('/');
-      });
-    }
-  }, [userData, router]);
+  // 로딩 상태 처리
+  const isLoading = loginMutation.isLoading;
 
   return (
     <AuthForm
       type="login"
-      form={form}
+      form={loginForm} // Redux form 대신 React Query state 사용
       onChange={onChange}
       onSubmit={onSubmit}
       error={error}
+      loading={isLoading}
     />
   );
 }

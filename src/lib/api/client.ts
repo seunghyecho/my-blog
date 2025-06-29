@@ -1,6 +1,48 @@
 import axios from 'axios';
+import { getAuthToken, removeAuthToken } from 'utils/auth';
+
 const client = axios.create();
 
+// TODO 확인 필요
+
+// 요청 인터셉터: 토큰 자동 추가
+client.interceptors.request.use(
+  (config) => {
+    const token = getAuthToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// 응답 인터셉터: 토큰 만료 처리
+client.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    
+    // 401 에러이고 재시도하지 않은 요청인 경우
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      
+      // 토큰 삭제
+      removeAuthToken();
+      
+      // 로그인 페이지로 리다이렉트
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
+    }
+    
+    return Promise.reject(error);
+  }
+);
 
 /*
   글로벌 설정 예시:
@@ -21,7 +63,7 @@ const client = axios.create();
       // 요청 실패 시 특정 작업 수행
       return Promise.reject(error);
     }
-  })
+  )
 */
 
 export default client;
