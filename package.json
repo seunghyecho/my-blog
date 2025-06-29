@@ -3,10 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_ENV=development next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:prod": "NODE_ENV=production next build",
+    "deploy:prod": "NODE_ENV=production next build && vercel --prod",
+    "vercel:prod": "vercel --prod",
+    "clean": "rm -rf build .next",
+    "clean:all": "rm -rf build .next node_modules && npm install"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.29.5",

@@ -2,17 +2,16 @@
 const path = require('path');
 
 module.exports = {
-  output: 'standalone',
   reactStrictMode: true,
   swcMinify: true,
-  distDir: 'build',
+  trailingSlash: false,
   compiler: {
     styledComponents: true
   },
   env: {
     NEXT_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_API_KEY
   },
-  webpack: (config, {isServer}) => {
+  webpack: (config, {isServer, dev}) => {
     if(!isServer){
       // Next.js에서 dynamic import 오류
       config.resolve.fallback={
@@ -21,6 +20,7 @@ module.exports = {
       }
     }
     
+    // 절대 경로 alias 설정
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname, 'src'),
@@ -29,6 +29,15 @@ module.exports = {
       lib: path.join(__dirname, 'src/lib'),
       modules: path.join(__dirname, 'src/modules')
     };
+
+    // standalone 빌드에서 모듈 해결을 위한 추가 설정
+    if (!dev && !isServer) {
+      config.resolve.modules = [
+        path.resolve(__dirname, 'src'),
+        'node_modules'
+      ];
+    }
+    
     return config;
   },
   rewrites: async () => {
