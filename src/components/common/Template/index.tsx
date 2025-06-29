@@ -17,14 +17,14 @@ function Template({ title, todos, setTodos }) {
         }
       ];
       setTodos(newTodo);
-    },[todos]);
+    },[setTodos, todos]);
 
   const handleRemove = useCallback((id:number) => {
       const newTodo = [...todos]
       .filter(todo =>
         todo.id !== id);
       setTodos(newTodo);
-    },[todos]);
+    },[setTodos, todos]);
 
   const handleToggle = useCallback((id:number) => {
       const newTodo = [...todos];
@@ -35,7 +35,7 @@ function Template({ title, todos, setTodos }) {
         return todo;
       })
       setTodos(newTodo);
-    },[todos]);
+    },[setTodos, todos]);
 
   useEffect(()=>{
     window.addEventListener('scroll', handleScroll);

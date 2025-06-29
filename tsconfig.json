@@ -21,7 +21,7 @@
       "containers/*": ["src/containers/*"],
       "pages/*": ["src/pages/*"],
       "types/*": ["src/types/*"],
-      "styles/*": ["src/styles/*"],
+      "styles/*": ["src/lib/styles/*"],
       "utils/*": ["src/utils/*"],
       "lib/*": ["src/lib/*"],
       "modules/*": ["src/modules/*"],

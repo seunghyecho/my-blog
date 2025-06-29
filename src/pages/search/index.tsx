@@ -56,7 +56,7 @@ function Search() {
         ...params
       }
     })
-  },[]);
+  },[params, router]);
 
   return (
     <SearchBlock>

@@ -55,8 +55,8 @@ export default function Tags() {
     }
   return (
   <TagsBlock>
-    {!isLoading && tags?.data.map((tag:string)=>{
-        return <TagItem onClick={()=>handleTagClick(tag)}>{tag}</TagItem>
+    {!isLoading && tags?.data.map((tag:string , index:number)=>{
+        return <TagItem key={index} onClick={()=>handleTagClick(tag)}>{tag}</TagItem>
         })}
     </TagsBlock>
 );
