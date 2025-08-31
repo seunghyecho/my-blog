@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useQuery } from '@tanstack/react-query';
-import styled from 'styled-components';
-import Responsive from 'components/common/Responsive';
-import SearchBar from 'components/common/SearchBar';
-import PostList from 'components/posts/PostList';
-import { fetchPosts } from 'lib/api/posts';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useQuery } from "@tanstack/react-query";
+import styled from "styled-components";
+
+import Responsive from "components/common/Responsive";
+import SearchBar from "components/common/SearchBar";
+import PostList from "components/posts/PostList";
+import { fetchPosts } from "lib/api/posts";
 
 const SearchBlock = styled(Responsive)`
   padding-bottom: 10rem;
@@ -17,61 +18,56 @@ const SearchBlock = styled(Responsive)`
 
 function Search() {
   const router = useRouter();
-  const [query, setQuery] = useState('');
-  
+  const [query, setQuery] = useState("");
+
   // TODO page를 전체로
-  const [params, ]= useState({
-    page:1,
-    username:'',
-    tag:'',
-  })
+  const [params] = useState({
+    page: 1,
+    username: "",
+    tag: "",
+  });
 
-  const {data, isLoading, isError} = useQuery(['posts'],() => fetchPosts({
-    ...params,
-  }));
+  const { data, isLoading, isError } = useQuery(["posts"], () =>
+    fetchPosts({
+      ...params,
+    })
+  );
 
-   const filteredData = (data, query) => {
-    if(!query) {
+  const filteredData = (data, query) => {
+    if (!query) {
       data = [];
     }
 
     query = query.toLowerCase();
 
-    return data?.filter(item =>
-      item.title.split(' ').some(word =>
-        word.toLowerCase().includes(query)
-      )
+    return data?.filter((item) =>
+      item.title.split(" ").some((word) => word.toLowerCase().includes(query))
     );
-  }
+  };
 
   const results = filteredData(data?.data, query);
 
-  const handleChange = (e)=>{
+  const handleChange = (e) => {
     setQuery(e.target.value);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     router.replace({
-      query:{
-        ...params
-      }
-    })
-  },[params, router]);
+      query: {
+        ...params,
+      },
+    });
+  }, [params, router]);
 
   return (
     <SearchBlock>
-      <SearchBar
-        query={query}
-        onChange={handleChange}
-      />
-      
-      <p>총 <strong>{results.length}</strong>개의 포스트를 찾았습니다.</p>
+      <SearchBar query={query} onChange={handleChange} />
 
-      <PostList
-        loading={isLoading}
-        error={isError}
-        posts={results}
-      />
+      <p>
+        총 <strong>{results.length}</strong>개의 포스트를 찾았습니다.
+      </p>
+
+      <PostList loading={isLoading} error={isError} posts={results} />
     </SearchBlock>
   );
 }

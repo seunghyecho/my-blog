@@ -1,19 +1,21 @@
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import PostViewer from 'components/post/PostViewer';
-import PostActionButtons from 'components/post/PostActionButtons';
-import { setOriginalPost } from 'modules/write';
-import { fetchDeletePost, fetchReadPost } from 'lib/api/posts';
-import { readPost, unloadPost } from 'modules/post';
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import PostViewer from "components/post/PostViewer";
+import PostActionButtons from "components/post/PostActionButtons";
+import { setOriginalPost } from "modules/write";
+import { fetchDeletePost, fetchReadPost } from "lib/api/posts";
+import { readPost, unloadPost } from "modules/post";
 
-import { getUserInfo } from 'utils/auth';
+import { getUserInfo } from "utils/auth";
 
-function PostViewerContainer({ postId }){
+function PostViewerContainer({ postId }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const {data, isLoading, isError}= useQuery(['detail'], ()=>fetchReadPost(postId))
+  const { data, isLoading, isError } = useQuery(["detail"], () =>
+    fetchReadPost(postId)
+  );
 
   const user = getUserInfo();
 
@@ -27,38 +29,37 @@ function PostViewerContainer({ postId }){
     };
   }, [dispatch, postId]);
 
-  const deleteMutate = useMutation(
-    () => fetchDeletePost((postId)),
-    {
-      onSuccess: () => {
-        router.push('/');
-      },
-      onError: () => {
-        alert('오류');
-      },
-    }
-  );
+  const deleteMutate = useMutation(() => fetchDeletePost(postId), {
+    onSuccess: () => {
+      router.push("/");
+    },
+    onError: () => {
+      alert("오류");
+    },
+  });
 
-  const onEdit = () =>{
+  const onEdit = () => {
     dispatch(setOriginalPost(post));
-    router.push('/create');
-  }
+    router.push("/create");
+  };
 
-  const onRemove = () =>{
+  const onRemove = () => {
     if (deleteMutate.isLoading) return;
     deleteMutate.mutate();
-  }
-  
+  };
+
   const ownPost = user?.id == (post && post?.user?._id);
 
   return (
-    <PostViewer 
-      post={post} 
-      loading={isLoading} 
-      error={isError} 
-      actionButtons={ownPost && <PostActionButtons onEdit={onEdit} onRemove={onRemove}/>}
+    <PostViewer
+      post={post}
+      loading={isLoading}
+      error={isError}
+      actionButtons={
+        ownPost && <PostActionButtons onEdit={onEdit} onRemove={onRemove} />
+      }
     />
   );
-};
+}
 
 export default PostViewerContainer;

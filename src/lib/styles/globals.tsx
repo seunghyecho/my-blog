@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import { reset } from 'styled-reset';
+import { createGlobalStyle } from "styled-components";
+import { reset } from "styled-reset";
 
 export const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -13,8 +13,8 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 나눔스퀘어, 'NanumSquare', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: ${({theme})=> theme.bgColor};
-    color: ${({theme})=> theme.textColor};
+    background: ${({ theme }) => theme.bgColor};
+    color: ${({ theme }) => theme.textColor};
   }
 
   * {
@@ -44,7 +44,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   a:hover {
-    text-decoration: underline;
+    text-decoration: none;
   }
 
   a:focus {

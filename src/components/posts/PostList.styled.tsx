@@ -1,28 +1,37 @@
-import styled from 'styled-components';
-import palette from 'lib/styles/palette';
+import styled from "styled-components";
+import palette from "lib/styles/palette";
 
 const PostListBlock = styled.ul`
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
-const PostItemBlock = styled.li`
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  width: calc(100%/2 - 5px);
-  border-radius: 12px;
-  border: 1px solid #eaeaea;
-  transition: all 0.2s ease-in-out;
+const PostWrapper = styled.div`
+ width: calc(100%/3 - 5px);
+ height: 280px;
 
-  @media (max-width: 1024px) {
+ @media (max-width: 1024px) {
     width: calc(100% / 2);
   }
   @media (max-width: 768px) {
     width: 100%;
     padding: 1.25rem;
   }
+`;
+
+const PostItemBlock = styled.li`
+  padding: 1.5rem;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-element1);
+  border-radius: 4px;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .04);
+  transition: box-shadow .25s ease-in, transform .25s ease-in;
 
   &:hover {
     transform: translateY(-4px);
@@ -30,16 +39,13 @@ const PostItemBlock = styled.li`
   }
 
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
     line-height: 1.4;
   }
 
-  a {
-    text-decoration: none;
-    color: inherit;
-    
+  a {    
     &:hover {
       color: ${palette.gray[6]};
     }
@@ -107,7 +113,8 @@ const PostItemContent = styled.div`
 
 export {
   PostListBlock,
+  PostWrapper,
   PostItemBlock,
   PostNullItemBlock,
-  PostItemContent
+  PostItemContent,
 };

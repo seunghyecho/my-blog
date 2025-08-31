@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
+import React from "react";
+import Link from "next/link";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   display: flex;
@@ -10,22 +10,24 @@ const Wrapper = styled.div`
 `;
 
 const TagItem = styled.div`
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
   transition: all 0.2s ease-in-out;
-  
-  &:hover {
-    background-color: #e0e0e0;
-    transform: translateY(-1px);
-  }
 
   a {
+    padding: 0.4rem 0.8rem;
+
     text-decoration: none;
-    font-size: 0.9rem;
     font-weight: 500;
-    
+    font-size: 1rem;
+    color: #22b8cf;
+    border-radius: 1rem;
+
     &:hover {
-      color: #333;
+      color: #ffffff;
+      background-color: #009cb4;
+      transform: translateY(-1px);
     }
   }
 `;
@@ -33,7 +35,7 @@ const TagItem = styled.div`
 function Tags({ tags }) {
   return (
     <Wrapper>
-      {tags.map(t => (
+      {tags.map((t: any) => (
         <TagItem key={t}>
           <Link href={`/?tag=${t}`}>#{t}</Link>
         </TagItem>

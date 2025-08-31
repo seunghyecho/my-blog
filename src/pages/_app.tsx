@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import createSagaMiddleware from '@redux-saga/core';
-import { legacy_createStore as createStore, applyMiddleware } from 'redux';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { HelmetProvider } from 'react-helmet-async';
-import { ThemeProvider } from 'styled-components';
+import React, { useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import createSagaMiddleware from "@redux-saga/core";
+import { legacy_createStore as createStore, applyMiddleware } from "redux";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HelmetProvider } from "react-helmet-async";
+import { ThemeProvider } from "styled-components";
 
-import rootReducer, { rootSaga } from '../modules';
-import { tempSetUser, check } from 'modules/user';
-import { GlobalStyle } from 'lib/styles/globals';
-import { darkTheme, lightTheme } from 'lib/styles/theme';
+import rootReducer, { rootSaga } from "../modules";
+import { tempSetUser, check } from "modules/user";
+import { GlobalStyle } from "lib/styles/globals";
+import { darkTheme, lightTheme } from "lib/styles/theme";
 
-import Header from 'components/common/Header';
-import Footer from 'components/common/Footer';
+import Header from "components/common/Header";
+import Footer from "components/common/Footer";
 
 function MyApp({ Component, pageProps }) {
   /**
@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
    */
   const [isDarkMode, setIsDarkMode] = useState(false);
   const toggleDarkMode = () => {
-    setIsDarkMode(prev => !prev);
+    setIsDarkMode((prev) => !prev);
   };
 
   /**
@@ -36,13 +36,13 @@ function MyApp({ Component, pageProps }) {
 
   const loadUser = () => {
     try {
-      const user = localStorage.getItem('user');
+      const user = localStorage.getItem("user");
       if (!user) return;
 
       store.dispatch(tempSetUser(JSON.parse(user)));
       store.dispatch(check());
     } catch (e) {
-      console.log('app, localStorage is not working');
+      console.log("app, localStorage is not working");
     }
   };
 
@@ -57,7 +57,7 @@ function MyApp({ Component, pageProps }) {
     return null;
   }
 
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return <></>;
   }
 
@@ -69,7 +69,7 @@ function MyApp({ Component, pageProps }) {
             <GlobalStyle />
             <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
             <Component {...pageProps} />
-            <Footer />
+            {/* <Footer /> */}
           </ThemeProvider>
         </QueryClientProvider>
       </Provider>
@@ -83,7 +83,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
-      refetchOnWindowFocus: false
-    }
-  }
+      refetchOnWindowFocus: false,
+    },
+  },
 });

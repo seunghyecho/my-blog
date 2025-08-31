@@ -4,9 +4,14 @@ import Link from "next/link";
 import styled from "styled-components";
 import Button from "components/common/Button";
 import palette from "lib/styles/palette";
-import { fetchCreateComment, fetchDeleteComment, fetchReadComment, fetchUpdateComment } from "lib/api/comments";
+import {
+  fetchCreateComment,
+  fetchDeleteComment,
+  fetchReadComment,
+  fetchUpdateComment,
+} from "lib/api/comments";
 
-import { getUserInfo } from 'utils/auth';
+import { getUserInfo } from "utils/auth";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -74,23 +79,17 @@ const CommentBlock = styled.li`
     }
 `;
 
-function ActionButtons({ handleDelete, handleUpdate }: { 
-  handleDelete: () => void; 
-  handleUpdate: () => void; 
+function ActionButtons({
+  handleDelete,
+  handleUpdate,
+}: {
+  handleDelete: () => void;
+  handleUpdate: () => void;
 }) {
   return (
     <div className="actions">
-      <Button 
-        type='button' 
-        label="삭제" 
-        onClick={handleDelete} 
-      />
-      <Button 
-        type='button' 
-        label='수정'  
-        cyan={true}  
-        onClick={handleUpdate} 
-      />
+      <Button type="button" label="삭제" onClick={handleDelete} />
+      <Button type="button" label="수정" cyan={true} onClick={handleUpdate} />
     </div>
   );
 }
@@ -107,10 +106,10 @@ function CommentContainer({ postId }: { postId: string }) {
     data,
     isLoading,
     isError,
-    refetch:refetchComments
+    refetch: refetchComments,
   } = useQuery(["comments", postId], () => fetchReadComment(postId));
 
-  const comments:any = data?.data ||[];
+  const comments: any = data?.data || [];
   // 댓글 생성
   const createMutation = useMutation(fetchCreateComment);
   // 댓글 삭제
@@ -130,26 +129,29 @@ function CommentContainer({ postId }: { postId: string }) {
     setValue("");
   };
 
-  const handleDelete = (id: string)=>{
-    deleteMutation.mutate(id,{
-      onSuccess:()=>{
+  const handleDelete = (id: string) => {
+    deleteMutation.mutate(id, {
+      onSuccess: () => {
         refetchComments();
-      }
-    })
-  }
+      },
+    });
+  };
 
   const handleEditChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditValue(e.target.value);
   };
 
   const handleUpdate = (id: string) => {
-    updateMutation.mutate({ id, postId, content: editValue }, {
-      onSuccess: () => {
-        refetchComments();
-        setEditingCommentId(null);
-        setEditValue("");
+    updateMutation.mutate(
+      { id, postId, content: editValue },
+      {
+        onSuccess: () => {
+          refetchComments();
+          setEditingCommentId(null);
+          setEditValue("");
+        },
       }
-    });
+    );
   };
 
   return (
@@ -169,11 +171,11 @@ function CommentContainer({ postId }: { postId: string }) {
       </form>
       <ul>
         {comments?.map((c: any) => {
-          const isOwnComment = user.id === c.user._id;
+          const isOwnComment = user?.id === c.user._id;
           const isEditing = editingCommentId === c._id;
-          
+
           return (
-            <CommentBlock key={c.id}>
+            <CommentBlock key={c.id || c._id}>
               <div className="user">
                 <span>
                   <Link href="/">
@@ -182,12 +184,12 @@ function CommentContainer({ postId }: { postId: string }) {
                 </span>
                 <span>{new Date(c.createdAt).toLocaleDateString()}</span>
                 {isOwnComment && (
-                  <ActionButtons 
-                    handleDelete={() => handleDelete(c._id)} 
+                  <ActionButtons
+                    handleDelete={() => handleDelete(c._id)}
                     handleUpdate={() => {
                       setEditingCommentId(c._id);
                       setEditValue(c.content);
-                    }} 
+                    }}
                   />
                 )}
               </div>
@@ -203,15 +205,15 @@ function CommentContainer({ postId }: { postId: string }) {
                       rows={4}
                       placeholder="댓글을 수정하세요"
                     />
-                    <Button 
-                      type="button" 
-                      label="수정 완료" 
-                      cyan 
+                    <Button
+                      type="button"
+                      label="수정 완료"
+                      cyan
                       onClick={() => handleUpdate(c._id)}
                     />
-                    <Button 
-                      type="button" 
-                      label="취소" 
+                    <Button
+                      type="button"
+                      label="취소"
                       onClick={() => {
                         setEditingCommentId(null);
                         setEditValue("");
