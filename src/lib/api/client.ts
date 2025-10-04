@@ -1,9 +1,11 @@
-import axios from 'axios';
-import { getAuthToken, removeAuthToken } from 'utils/auth';
+import axios from "axios";
+import { getAuthToken, removeAuthToken } from "utils/auth";
 
 const client = axios.create();
-
-// TODO 확인 필요
+client.defaults.baseURL =
+  process.env.NEXT_PUBLIC_API_URL || process.env.APP_USER_API_URL;
+client.defaults.withCredentials = true; // Axios 설정에서 활성화
+client.defaults.headers.common["Content-Type"] = "application/json";
 
 // 요청 인터셉터: 토큰 자동 추가
 client.interceptors.request.use(
@@ -26,20 +28,20 @@ client.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    
+
     // 401 에러이고 재시도하지 않은 요청인 경우
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      
+
       // 토큰 삭제
       removeAuthToken();
-      
+
       // 로그인 페이지로 리다이렉트
-      if (typeof window !== 'undefined') {
-        window.location.href = '/login';
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
       }
     }
-    
+
     return Promise.reject(error);
   }
 );

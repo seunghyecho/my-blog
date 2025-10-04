@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
-import palette from 'lib/styles/palette';
+import palette from "lib/styles/palette";
 import { fetchPostsByTag } from "lib/api/tags";
 import ListItem from "components/common/ListItem";
-import Pagination from 'components/posts/Pagination';
+import Pagination from "components/posts/Pagination";
 
 const TagPageContainer = styled.div`
   max-width: 1200px;
@@ -43,29 +43,33 @@ const PostList = styled.div`
   gap: 2rem;
 `;
 
-export default function Tags(){
-    const router = useRouter();
+export default function Tags() {
+  const router = useRouter();
 
-    const tag = router.query.tag as string || '';
-    
-    const [page, setPage] = useState(router.query.page ? Number(router.query.page) : 1);
-    
-    const {data:tags, isLoading} = useQuery(['tags', page],() => fetchPostsByTag({
-      tag:router.query.tag as string || '',
-      page
-    }));
+  const tag = (router.query.tag as string) || "";
 
-    const lastPage = Number(tags?.headers['last-page'] );
+  const [page, setPage] = useState(
+    router.query.page ? Number(router.query.page) : 1
+  );
 
-    const handleMoveDetailPage = (_id:string) => {
-      if (!router.isReady) return;
-      if (_id) {
-        router.replace(`/posts`);
-        window.localStorage.setItem('_id', _id);
-      }
-    };
+  const { data: tags, isLoading } = useQuery(["tags", page], () =>
+    fetchPostsByTag({
+      tag: (router.query.tag as string) || "",
+      page,
+    })
+  );
 
-    return(
+  const lastPage = Number(tags?.headers["last-page"]);
+
+  const handleMoveDetailPage = (_id: string) => {
+    if (!router.isReady) return;
+    if (_id) {
+      router.replace(`/posts`);
+      window.localStorage.setItem("_id", _id);
+    }
+  };
+
+  return (
     <TagPageContainer>
       <TagHeader>
         <TagTitle>{tag}</TagTitle>
@@ -74,16 +78,17 @@ export default function Tags(){
         </TagDescription>
       </TagHeader>
       <PostList>
-        {!isLoading && tags?.data?.map((tag) => (
-          <ListItem post={tag} key={tag._id} handleMoveDetailPage={handleMoveDetailPage}/>
-        ))}
+        {!isLoading &&
+          tags?.data?.map((tag) => (
+            <ListItem
+              post={tag}
+              key={tag._id}
+              handleMoveDetailPage={handleMoveDetailPage}
+            />
+          ))}
       </PostList>
 
-      <Pagination
-        page={page}
-        setPage={setPage}
-        lastPage={lastPage}
-      />
+      <Pagination page={page} setPage={setPage} lastPage={lastPage} />
     </TagPageContainer>
-  )
+  );
 }

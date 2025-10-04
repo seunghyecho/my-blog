@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   PostListBlock,
   PostWrapper,
@@ -8,6 +9,7 @@ import {
 import ListItem from "components/common/ListItem";
 
 function PostList({ posts, loading, error }) {
+  const router = useRouter();
   if (error) {
     return <PostNullItemBlock>오류 발생!</PostNullItemBlock>;
   }
@@ -16,6 +18,14 @@ function PostList({ posts, loading, error }) {
     return <PostNullItemBlock>등록된 글이 없습니다.</PostNullItemBlock>;
   }
 
+  const handleMoveDetailPage = (_id: string) => {
+    if (!router.isReady) return;
+    if (_id) {
+      router.replace(`/posts`);
+      window.localStorage.setItem("_id", _id);
+    }
+  };
+
   return (
     <>
       {!loading && posts && (
@@ -23,7 +33,11 @@ function PostList({ posts, loading, error }) {
           {posts.map((post: any) => (
             <PostWrapper key={post._id}>
               <Link href={`/posts?_id=${post._id}`}>
-                <ListItem post={post} key={post._id} />
+                <ListItem
+                  post={post}
+                  key={post._id}
+                  handleMoveDetailPage={handleMoveDetailPage}
+                />
               </Link>
             </PostWrapper>
           ))}
