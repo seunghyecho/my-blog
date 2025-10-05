@@ -1,13 +1,8 @@
-import React from 'react';
-import PostList from 'components/posts/PostList';
+import React from "react";
 
-function PostListContainer({ posts,isLoading, isError }){
-  return (
-    <PostList
-      loading={isLoading}
-      error={isError}
-      posts={posts}
-    />
-  );
-};
+import PostList from "components/posts/PostList";
+
+function PostListContainer({ posts, isLoading, isError }) {
+  return <PostList loading={isLoading} error={isError} posts={posts} />;
+}
 export default PostListContainer;

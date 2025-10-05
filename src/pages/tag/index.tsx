@@ -1,7 +1,9 @@
+import Link from "next/link";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
 import styled from "styled-components";
+
 import palette from "lib/styles/palette";
 import { fetchPostsByTag } from "lib/api/tags";
 import ListItem from "components/common/ListItem";
@@ -61,34 +63,25 @@ export default function Tags() {
 
   const lastPage = Number(tags?.headers["last-page"]);
 
-  const handleMoveDetailPage = (_id: string) => {
-    if (!router.isReady) return;
-    if (_id) {
-      router.replace(`/posts`);
-      window.localStorage.setItem("_id", _id);
-    }
-  };
-
   return (
-    <TagPageContainer>
-      <TagHeader>
-        <TagTitle>{tag}</TagTitle>
-        <TagDescription>
-          {tag} 태그와 관련된 {tags?.data.length}개의 게시물을 확인하세요.
-        </TagDescription>
-      </TagHeader>
-      <PostList>
-        {!isLoading &&
-          tags?.data?.map((tag) => (
-            <ListItem
-              post={tag}
-              key={tag._id}
-              handleMoveDetailPage={handleMoveDetailPage}
-            />
-          ))}
-      </PostList>
-
+    <>
+      <TagPageContainer>
+        <TagHeader>
+          <TagTitle>{tag}</TagTitle>
+          <TagDescription>
+            {tag} 태그와 관련된 {tags?.data.length}개의 게시물을 확인하세요.
+          </TagDescription>
+        </TagHeader>
+        <PostList>
+          {!isLoading &&
+            tags?.data?.map((tag: any) => (
+              <Link href={`/posts?_id=${tag._id}`} key={tag._id}>
+                <ListItem post={tag} />
+              </Link>
+            ))}
+        </PostList>
+      </TagPageContainer>
       <Pagination page={page} setPage={setPage} lastPage={lastPage} />
-    </TagPageContainer>
+    </>
   );
 }

@@ -6,10 +6,10 @@ import {
 } from "components/posts/PostList.styled";
 import { postT } from "types/post";
 
-export default function ListItem({ post, handleMoveDetailPage }) {
+export default function ListItem({ post }) {
   const { title, body, user, publishedDate, tags, _id }: postT = post;
   return (
-    <PostItemBlock onClick={handleMoveDetailPage(_id)}>
+    <PostItemBlock>
       <div>
         <h1>{title}</h1>
 
