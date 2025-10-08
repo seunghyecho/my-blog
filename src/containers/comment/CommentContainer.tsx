@@ -9,9 +9,10 @@ import {
   fetchDeleteComment,
   fetchReadComment,
   fetchUpdateComment,
-} from "lib/api/comments";
+} from "pages/api/comments";
 
 import { getUserInfo } from "utils/auth";
+import { useSession } from "next-auth/react";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -95,7 +96,8 @@ function ActionButtons({
 }
 
 function CommentContainer({ postId }: { postId: string }) {
-  const user = getUserInfo();
+  const { data: session, status } = useSession();
+  const user = session?.user;
 
   const [value, setValue] = useState("");
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);

@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
-import * as authAPI from 'lib/api/auth';
+import * as authAPI from 'pages/api/auth';
 
 import Button from 'components/common/Button';
 import AuthTemplate from 'components/auth/AuthTemplate';
 import { getUserInfo } from 'utils/auth';
+import { signOut, useSession } from 'next-auth/react';
 
 const HeadStyled = styled.h1`
   margin: 1rem 0;
@@ -27,25 +28,21 @@ const HeadStyled = styled.h1`
 `;
 
 function Accounts() {
-  const router = useRouter();
-
-  const user = getUserInfo();
+  const { data: session, status } = useSession();
+  const user = session?.user;
 
   const onLogout = () => {
     const check = window.confirm('로그아웃 하시겠습니까?');
     if (check) {
-      // dispatch(logout());
-
-      authAPI.logout().then(res => {
-        sessionStorage.clear();
-        return router.push('/');
-      });
+      signOut({
+        callbackUrl: "/",
+      })
     }
   };
 
   return (
     <AuthTemplate>
-      <HeadStyled>{user?.username} 님</HeadStyled>
+      <HeadStyled>{status === "authenticated" ? user?.username : ""} 님</HeadStyled>
       <Button label="로그아웃" onClick={onLogout} fullWidth />
     </AuthTemplate>
   );

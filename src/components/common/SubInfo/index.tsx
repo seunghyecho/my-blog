@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import palette from "lib/styles/palette";
 
 import { getUserInfo } from 'utils/auth';
+import { useSession } from 'next-auth/react';
 
 const SubInfoBlock = styled.div<{ isMarginTop: boolean }>`
   padding: 1rem 0;
@@ -39,7 +40,9 @@ const SubInfoBlock = styled.div<{ isMarginTop: boolean }>`
 `;
 
 function SubInfo({ username, publishedDate, isMarginTop }) {
-  const user = getUserInfo();
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  
   return (
     <SubInfoBlock isMarginTop={isMarginTop}>
       <span>

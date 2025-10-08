@@ -6,6 +6,7 @@ import { legacy_createStore as createStore, applyMiddleware } from "redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "styled-components";
+import { SessionProvider } from "next-auth/react"
 
 import rootReducer, { rootSaga } from "../modules";
 import { tempSetUser, check } from "modules/user";
@@ -15,7 +16,7 @@ import { darkTheme, lightTheme } from "lib/styles/theme";
 import Header from "components/common/Header";
 import Footer from "components/common/Footer";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({  Component, pageProps: { session, ...pageProps } }) {
   /**
    *  다크모드 상태 및 버튼 이벤트
    */
@@ -62,18 +63,20 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <HelmetProvider>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-            <GlobalStyle />
-            <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-            <Component {...pageProps} />
-            {/* <Footer /> */}
-          </ThemeProvider>
-        </QueryClientProvider>
-      </Provider>
-    </HelmetProvider>
+    <SessionProvider session={session}>
+      <HelmetProvider>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+              <GlobalStyle />
+              <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+              <Component {...pageProps} />
+              {/* <Footer /> */}
+            </ThemeProvider>
+          </QueryClientProvider>
+        </Provider>
+      </HelmetProvider>
+    </SessionProvider>
   );
 }
 

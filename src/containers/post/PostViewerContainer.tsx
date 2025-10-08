@@ -5,19 +5,23 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import PostViewer from "components/post/PostViewer";
 import PostActionButtons from "components/post/PostActionButtons";
 import { setOriginalPost } from "modules/write";
-import { fetchDeletePost, fetchReadPost } from "lib/api/posts";
+import { fetchDeletePost, fetchReadPost } from "pages/api/posts";
 import { readPost, unloadPost } from "modules/post";
 
 import { getUserInfo } from "utils/auth";
+import { useSession } from "next-auth/react";
 
 function PostViewerContainer({ postId }) {
   const dispatch = useDispatch();
   const router = useRouter();
+  
+  const { data: session, status } = useSession();
+  const user = session?.user;
+
   const { data, isLoading, isError } = useQuery(["detail"], () =>
     fetchReadPost(postId)
   );
 
-  const user = getUserInfo();
 
   const post = data?.data;
 

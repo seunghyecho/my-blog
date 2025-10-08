@@ -1,4 +1,4 @@
-import client from 'lib/api/client';
+import client from 'pages/api/client';
 
 const { NEXT_PUBLIC_API_KEY } = process.env;
 

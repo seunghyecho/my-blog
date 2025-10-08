@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Responsive from "components/common/Responsive";
 import SearchBar from "components/common/SearchBar";
 import PostList from "components/posts/PostList";
-import { fetchPosts } from "lib/api/posts";
+import { fetchPosts } from "pages/api/posts";
 
 const SearchBlock = styled(Responsive)`
   padding-bottom: 10rem;

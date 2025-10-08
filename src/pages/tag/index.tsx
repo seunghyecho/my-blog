@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import palette from "lib/styles/palette";
-import { fetchPostsByTag } from "lib/api/tags";
+import { fetchPostsByTag } from "pages/api/tags";
 import ListItem from "components/common/ListItem";
 import Pagination from "components/posts/Pagination";
 

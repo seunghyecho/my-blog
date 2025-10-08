@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import styled from 'styled-components';
+
 import ThemeToggle from 'components/common/ThemeToggle';
 import HeaderUtils from 'components/common/HeaderUtils';
 import Responsive from 'components/common/Responsive';
 import { getUserInfo } from 'utils/auth';
+import { useEffect, useState } from 'react';
 
 const HeaderBlock = styled.header`
   height: 6rem;
@@ -28,17 +31,26 @@ const Spacer = styled.div`
 `;
 
 function Header({ isDarkMode, toggleDarkMode }) {
-  const user = getUserInfo();
-
+  const { data: session, status } = useSession();
+  const [username, setUsername] = useState("");
+  
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.username) {
+      setUsername(session.user.username); // ✅ 세션에서 username 가져오기
+    } else if (status === "unauthenticated") {
+      setUsername(""); // 세션 만료 시 초기화
+    }
+  }, [status, session]);
+  
   return (
     <HeaderBlock>
       <Wrapper>
         <ThemeToggle toggle={toggleDarkMode} mode={isDarkMode} />
 
         <Link href="/" className="title">
-          {user?.username ? `@${user?.username}` : '@'} Blog
+          {`@${username}`} Blog
         </Link>
-        <HeaderUtils user={user?.username} />
+        <HeaderUtils user={username} />
       </Wrapper>
       <Spacer />
     </HeaderBlock>

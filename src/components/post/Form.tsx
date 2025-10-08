@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import TitleBodyBox from 'components/write/TitleBodyBox';
 import ActionButtons from 'components/post/ActionButtons';
 import TagBox from 'components/write/TagBox';
-import { fetchCreatePost, fetchUpdatePost } from 'lib/api/posts';
+import { fetchCreatePost, fetchUpdatePost } from 'pages/api/posts';
 
 interface prop{
   data?:any;
