@@ -1,99 +1,82 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
+import { useMutation } from "@tanstack/react-query";
+
 import AuthForm from "components/auth/AuthForm";
-import { changeField, initializeForm, register } from "modules/auth";
-import { check } from "modules/user";
+import { register } from "pages/api/auth";
+import { CustomError } from "types/error";
 
 function RegisterForm() {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const [error, setError] = useState(null);
-  const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
-    form: auth.register,
-    auth: auth.auth,
-    authError: auth.authError,
-    user: user.user,
-  }));
+
+  const [error, setError] = useState<string>(null);
+
+  const [registerForm, setRegisterForm] = useState({
+    username: "",
+    password: "",
+    passwordConfirm: "",
+  });
+
+  const handleRegister = useMutation(register, {
+    onSuccess: (data, variables, context) => {
+      console.log("회원가입 성공!");
+      console.log("회원가입 성공 : data ", data);
+      console.log("회원가입 성공 : variables ", variables); // {"username": "username","password": "password"}
+
+      router.push("/login");
+    },
+    onError: (error, variables, context) => {
+      console.log("회원가입 실패 : variables ", variables);
+      console.log("회원가입 실패 : context ", context);
+
+      const customErr = error as CustomError;
+      if (customErr.response.status === 409) {
+        setError("이미 존재하는 계정입니다.");
+        return;
+      }
+      if (customErr.response.status === 400) {
+        setError("회원가입에 실패했습니다.");
+        return;
+      }
+      if (customErr.response.status === 500) {
+        console.error("Register API error:", error);
+      }
+    },
+  });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    dispatch(
-      changeField({
-        form: "register",
-        key: name,
-        value,
-      })
-    );
+
+    setRegisterForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { username, password, passwordConfirm } = form;
+    const { username, password, passwordConfirm } = registerForm;
+
     // 하나라도 비어 있을 경우
     if ([username, password, passwordConfirm].includes("")) {
       setError("빈 칸을 모두 입력하세요.");
       return;
     }
+
     // 비밀번호가 일치하지 않을 경우
     if (password !== passwordConfirm) {
       setError("비밀번호가 일치하지 않습니다.");
-      dispatch(changeField({ form: "register", key: "password", value: "" }));
-      dispatch(
-        changeField({ form: "register", key: "passwordConfirm", value: "" })
-      );
       return;
     }
-    console.log(register({ username, password }), "------------");
 
-    dispatch(register({ username, password }));
+    // React Query mutate 호출
+    handleRegister.mutate({ username, password });
   };
-
-  // 컴포넌트 처음 렌더링 시 form 초기화
-  useEffect(() => {
-    dispatch(initializeForm("register"));
-  }, [dispatch]);
-
-  // 회원가입 성공, 실패 처리
-  useEffect(() => {
-    if (authError) {
-      console.log("오류 발생");
-      // 계정이 이미 존재할 경우
-      if (authError.response.status === 409) {
-        setError("이미 존재하는 계정입니다.");
-        return;
-      }
-      // 기타
-      console.log("회원가입 실패!");
-      return;
-    }
-    if (auth) {
-      console.log("회원가입 성공!");
-      console.log(auth);
-      // dispatch(check()); //회원가입 성공 후 check 호출해 현재 사용자가 로그인 상태인지 확인함.
-
-      router.push("/login");
-      // return;
-    }
-  }, [auth, authError, dispatch]);
-
-  useEffect(() => {
-    if (user) {
-      console.log("check API 성공");
-      console.log(user);
-      router.push("/");
-      try {
-        window.localStorage.setItem("user", JSON.stringify(user));
-      } catch (e) {
-        console.log("register, localStorage is not working");
-      }
-    }
-  }, [router, user]);
 
   return (
     <AuthForm
       type="register"
-      form={form}
+      form={registerForm}
       onChange={onChange}
       onSubmit={onSubmit}
       error={error}

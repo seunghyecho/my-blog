@@ -10,13 +10,9 @@ export default function ListItem({ post }) {
   const { title, body, user, publishedDate, tags, _id }: postT = post;
   return (
     <PostItemBlock>
-      <div>
-        <h1>{title}</h1>
-
-        <PostItemContent dangerouslySetInnerHTML={{ __html: body }} />
-
-        <Tags tags={tags} />
-      </div>
+      <h1>{title}</h1>
+      <PostItemContent dangerouslySetInnerHTML={{ __html: body }} />
+      <Tags tags={tags} />
       <SubInfo
         isMarginTop
         username={user?.username}

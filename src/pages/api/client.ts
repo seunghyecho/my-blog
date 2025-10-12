@@ -10,6 +10,7 @@ client.defaults.headers.common["Content-Type"] = "application/json";
 // 요청 인터셉터: 토큰 자동 추가
 client.interceptors.request.use(
   (config) => {
+    console.log("요청 인터셉터:", config);
     const token = getAuthToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -24,6 +25,7 @@ client.interceptors.request.use(
 // 응답 인터셉터: 토큰 만료 처리
 client.interceptors.response.use(
   (response) => {
+    console.log("응답 인터셉터:", response);
     return response;
   },
   async (error) => {

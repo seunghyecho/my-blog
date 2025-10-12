@@ -1,12 +1,8 @@
-import { useRouter } from 'next/router';
-import styled from 'styled-components';
+import styled from "styled-components";
+import { signOut, useSession } from "next-auth/react";
 
-import * as authAPI from 'pages/api/auth';
-
-import Button from 'components/common/Button';
-import AuthTemplate from 'components/auth/AuthTemplate';
-import { getUserInfo } from 'utils/auth';
-import { signOut, useSession } from 'next-auth/react';
+import Button from "components/common/Button";
+import AuthTemplate from "components/auth/AuthTemplate";
 
 const HeadStyled = styled.h1`
   margin: 1rem 0;
@@ -32,17 +28,19 @@ function Accounts() {
   const user = session?.user;
 
   const onLogout = () => {
-    const check = window.confirm('로그아웃 하시겠습니까?');
+    const check = window.confirm("로그아웃 하시겠습니까?");
     if (check) {
       signOut({
         callbackUrl: "/",
-      })
+      });
     }
   };
 
   return (
     <AuthTemplate>
-      <HeadStyled>{status === "authenticated" ? user?.username : ""} 님</HeadStyled>
+      <HeadStyled>
+        {status === "authenticated" ? user?.username : ""} 님
+      </HeadStyled>
       <Button label="로그아웃" onClick={onLogout} fullWidth />
     </AuthTemplate>
   );
