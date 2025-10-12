@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Helmet } from 'react-helmet-async';
-import Tags from 'components/common/Tags';
-import SubInfo from 'components/common/SubInfo';
+import React from "react";
+import styled from "styled-components";
+import MetaTag from "components/common/MetaTag";
+import Tags from "components/common/Tags";
+import SubInfo from "components/common/SubInfo";
 
 const PostViewerContent = styled.div`
   margin: 2rem 0;
@@ -43,7 +43,7 @@ const ActionButtonsWrapper = styled.div`
   border-top: 1px solid #eaeaea;
 `;
 
-function PostViewer ({ post, error, loading, actionButtons }) {
+function PostViewer({ post, error, loading, actionButtons }) {
   // 에러 발생 시
   if (error) {
     if (error.response && error.response.status === 404) {
@@ -60,9 +60,7 @@ function PostViewer ({ post, error, loading, actionButtons }) {
   const { title, body, user, publishedDate, tags } = post;
   return (
     <>
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
+      <MetaTag />
 
       <Wrapper>
         <h1>{title}</h1>
@@ -73,14 +71,10 @@ function PostViewer ({ post, error, loading, actionButtons }) {
         />
         <PostViewerContent dangerouslySetInnerHTML={{ __html: body }} />
         <Tags tags={tags} />
-        <ActionButtonsWrapper>
-          {actionButtons}
-        </ActionButtonsWrapper>
-        
+        <ActionButtonsWrapper>{actionButtons}</ActionButtonsWrapper>
       </Wrapper>
     </>
   );
-};
+}
 
 export default PostViewer;
-
